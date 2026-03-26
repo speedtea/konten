@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stories | Iqbal's Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --secondary: #777;
+            --border: #eeeeee;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 5%; }
+        
+        .back-nav { margin-bottom: 60px; }
+        .back-nav a { text-decoration: none; color: var(--secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Head Halaman */
+        .story-header { margin-bottom: 80px; animation: fadeIn 1s ease-out; }
+        .story-header h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: clamp(2.5rem, 6vw, 4rem); 
+            margin-bottom: 20px; 
+            font-weight: 400;
+        }
+        .story-intro { 
+            font-size: 1.1rem; 
+            color: var(--secondary); 
+            max-width: 600px; 
+            border-left: 2px solid var(--text); 
+            padding-left: 20px;
+            font-style: italic;
+        }
+
+        /* Daftar Artikel */
+        #stories-container { display: flex; flex-direction: column; gap: 40px; }
+        
+        .story-item { 
+            text-decoration: none; 
+            color: inherit; 
+            display: block; 
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            transition: 0.3s;
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        .story-meta { 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: var(--secondary); 
+            margin-bottom: 10px; 
+            display: block;
+        }
+
+        .story-item h2 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 1.8rem; 
+            margin-bottom: 10px; 
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .story-item p { color: var(--secondary); font-size: 1rem; }
+        .story-item:hover { opacity: 0.6; transform: translateX(5px); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Loading & Error State */
+        .status-msg { color: var(--secondary); font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="back-nav"><a href="index.html">← Index</a></nav>
+
+        <header class="story-header">
+            <h1>The <i>Journal.</i></h1>
+            <p class="story-intro">
+                "Sebuah arsip digital berisi catatan perjalanan, kurasi visual, dan refleksi harian saya tentang desain, teknologi, dan cara hidup minimalis."
+            </p>
+        </header>
+
+        <main id="stories-container">
+            <p class="status-msg">Menyusun arsip cerita...</p>
+        </main>
+    </div>
+
+    <script>
+        // 1. Ganti URL ini dengan Link CSV dari Google Sheets kamu (File > Share > Publish to Web > format CSV)
+        const sheetStoriesURL = "GANTI_DENGAN_LINK_CSV_GOOGLE_SHEET_KAMU";
+
+        async function loadStories() {
+            try {
+                const response = await fetch(sheetStoriesURL);
+                const data = await response.text();
+                
+                // Pisahkan per baris dan hapus baris header (paling atas)
+                const rows = data.split('\n').slice(1);
+                const container = document.getElementById('stories-container');
+                container.innerHTML = '';
+
+                rows.forEach(row => {
+                    // Pisahkan per kolom (Kategori, Tanggal, Judul, Deskripsi, Link)
+                    const cols = row.split(',');
+                    if (cols.length < 4) return; // Lewati jika baris kosong
+
+                    const [kategori, tanggal, judul, deskripsi, link] = cols;
+
+                    container.innerHTML += `
+                        <a href="${link}" class="story-item">
+                            <span class="story-meta">${kategori.trim()} — ${tanggal.trim()}</span>
+                            <h2>${judul.trim()}</h2>
+                            <p>${deskripsi.trim()}</p>
+                        </a>
+                    `;
+                });
+
+            } catch (error) {
+                console.error("Gagal memuat stories:", error);
+                document.getElementById('stories-container').innerHTML = `
+                    <p class="status-msg">Maaf, arsip cerita sedang tidak tersedia atau link Google Sheet belum dikonfigurasi.</p>
+                `;
+            }
+        }
+
+        loadStories();
+    </script>
+</body>
+</html>
