@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>IQL STORE | Premium Marketplace 2026</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    container: {
+                        center: true,
+                        padding: '0', 
+                    },
+                },
+            },
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* Reset Dasar */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #f8fafc;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            scroll-behavior: smooth; 
+            color: #1e293b; 
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .bg-amazon-dark { background-color: #0f172a; }
+        .amazon-orange { background-color: #f59e0b; }
+        .swiper-pagination-bullet-active { background: #f59e0b !important; }
+        
+        .product-card { 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border: 1px solid #f1f5f9; 
+            background: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+        }
+        .product-card:hover { 
+            transform: translateY(-10px); 
+            border-color: #f59e0b; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); 
+        }
+
+        /* Skeleton Animation */
+        @keyframes shimmer {
+            0% { background-position: -468px 0; }
+            100% { background-position: 468px 0; }
+        }
+        .skeleton {
+            background: #f6f7f8;
+            background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+            background-repeat: no-repeat;
+            background-size: 800px 104px;
+            display: inline-block;
+            position: relative;
+            animation: shimmer 1.2s infinite linear;
+        }
+
+        @keyframes pulse-fast { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.8; transform: scale(0.95); } }
+        .animate-pulse-fast { animation: pulse-fast 1s infinite; }
+        .star-rating { color: #fbbf24; }
+
+        .floating-wa { 
+            position: fixed; 
+            bottom: 25px; 
+            right: 25px; 
+            z-index: 100; 
+            transition: 0.3s; 
+            filter: drop-shadow(0 10px 15px rgba(34, 197, 94, 0.4)); 
+        }
+        .floating-wa:hover { transform: scale(1.1) rotate(8deg); }
+        
+        #searchSuggestions { display: none; max-height: 350px; overflow-y: auto; z-index: 1000; border-radius: 1.5rem; }
+        .suggestion-item:hover { background-color: #f8fafc; cursor: pointer; }
+
+        .hero-section { width: 100%; padding: 0 !important; }
+        .heroSwiper { border-radius: 0 !important; border: none !important; }
+
+        #clearSearch { display: none; }
+
+        .ig-item { position: relative; overflow: hidden; border-radius: 16px; cursor: pointer; }
+        .ig-overlay { 
+            position: absolute; inset: 0; background: rgba(15, 23, 42, 0.7); 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            opacity: 0; transition: 0.4s; color: white; text-align: center;
+            backdrop-blur: 4px;
+        }
+        .ig-item:hover .ig-overlay { opacity: 1; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .cat-card {
+            transition: all 0.3s ease;
+        }
+        .cat-card:hover {
+            transform: scale(1.05);
+        }
+        .cat-active {
+            border-color: #f59e0b !important;
+            background-color: #fffbeb !important;
+        }
+    </style>
+</head>
+<body class="pb-10">
+
+<div class="w-full min-h-screen flex flex-col">
+
+    <a href="https://wa.me/6283870088809" target="_blank" class="floating-wa">
+        <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" width="65" alt="WA">
+    </a>
+
+    <header class="bg-amazon-dark text-white sticky top-0 z-50 shadow-2xl w-full backdrop-blur-md bg-opacity-95">
+        <div class="main-container py-4 flex justify-between items-center gap-4">
+            <div class="text-2xl md:text-3xl font-black flex items-center gap-1 cursor-pointer shrink-0" onclick="filterProduct('all')">
+                <span class="text-[#f59e0b]">IQL</span><span>STORE</span>
+            </div>
+            <div class="flex-1 max-w-2xl relative">
+                <div class="relative flex items-center">
+                    <input type="text" id="searchInput" oninput="toggleClearBtn()" onkeyup="handleSearch(event)" autocomplete="off" placeholder="Cari gadget, fashion, atau perlengkapan rumah..." class="w-full py-3 pl-6 pr-20 rounded-2xl text-black outline-none text-sm border-2 border-transparent focus:border-[#f59e0b] transition-all">
+                    
+                    <button id="clearSearch" onclick="clearSearchField()" class="absolute right-12 text-gray-400 hover:text-black font-bold text-lg p-1 transition">✕</button>
+                    
+                    <button class="absolute right-2 top-1.5 bg-[#f59e0b] px-4 py-1.5 rounded-xl text-black font-bold">🔍</button>
+                    
+                    <div id="searchSuggestions" class="absolute top-full left-0 right-0 bg-white mt-3 shadow-2xl border border-slate-100 overflow-hidden text-black animate-fade-in"></div>
+                </div>
+            </div>
+            <div class="relative cursor-pointer group" onclick="toggleCart()">
+                <div class="bg-slate-800 p-3 rounded-2xl group-hover:bg-slate-700 transition">
+                    <span class="text-xl md:text-2xl">🛒</span>
+                </div>
+                <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full h-6 w-6 flex items-center justify-center border-2 border-amazon-dark">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-section w-full mb-8">
+        <div class="swiper heroSwiper w-full overflow-hidden">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="https://github.com/speedtea/Tes/blob/main/img/banner2.jpg?raw=true" class="w-full h-[220px] md:h-[550px] object-cover">
+                </div>
+                <div class="swiper-slide">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600" class="w-full h-[220px] md:h-[550px] object-cover">
+                </div>
+                <div class="swiper-slide">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1600" class="w-full h-[220px] md:h-[550px] object-cover">
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <section class="main-container mb-12">
+        <div class="flex items-center justify-between mb-6 px-1">
+            <h3 class="font-extrabold text-slate-800 text-lg uppercase tracking-wider">Kategori Pilihan</h3>
+            <button onclick="filterProduct('all')" class="text-xs font-bold text-orange-500 hover:text-orange-600">Lihat Semua</button>
+        </div>
+        <div class="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-4">
+            <div onclick="filterProduct('gadget')" class="cat-card cursor-pointer group text-center" data-cat="gadget">
+                <div class="bg-white p-4 md:p-6 rounded-3xl shadow-sm border-2 border-slate-100 group-hover:border-orange-400 transition-all">
+                    <img src="https://cdn-icons-png.flaticon.com/512/644/644458.png" class="w-8 md:w-12 mx-auto mb-2">
+                    <p class="text-[9px] md:text-xs font-bold uppercase text-slate-600">Gadget</p>
+                </div>
+            </div>
+            <div onclick="filterProduct('fashion')" class="cat-card cursor-pointer group text-center" data-cat="fashion">
+                <div class="bg-white p-4 md:p-6 rounded-3xl shadow-sm border-2 border-slate-100 group-hover:border-orange-400 transition-all">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3050/3050239.png" class="w-8 md:w-12 mx-auto mb-2">
+                    <p class="text-[9px] md:text-xs font-bold uppercase text-slate-600">Fashion</p>
+                </div>
+            </div>
+            <div onclick="filterProduct('kecantikan')" class="cat-card cursor-pointer group text-center" data-cat="kecantikan">
+                <div class="bg-white p-4 md:p-6 rounded-3xl shadow-sm border-2 border-slate-100 group-hover:border-orange-400 transition-all">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3163/3163195.png" class="w-8 md:w-12 mx-auto mb-2">
+                    <p class="text-[9px] md:text-xs font-bold uppercase text-slate-600">Beauty</p>
+                </div>
+            </div>
+            <div onclick="filterProduct('bayi')" class="cat-card cursor-pointer group text-center" data-cat="bayi">
+                <div class="bg-white p-4 md:p-6 rounded-3xl shadow-sm border-2 border-slate-100 group-hover:border-orange-400 transition-all">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2855/2855519.png" class="w-8 md:w-12 mx-auto mb-2">
+                    <p class="text-[9px] md:text-xs font-bold uppercase text-slate-600">Bayi</p>
+                </div>
+            </div>
+            <div onclick="filterProduct('olahraga')" class="cat-card cursor-pointer group text-center" data-cat="olahraga">
+                <div class="bg-white p-4 md:p-6 rounded-3xl shadow-sm border-2 border-slate-100 group-hover:border-orange-400 transition-all">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2964/2964514.png" class="w-8 md:w-12 mx-auto mb-2">
+                    <p class="text-[9px] md:text-xs font-bold uppercase text-slate-600">olahraga</p>
+                </div>
+            </div>
+            <div onclick="filterProduct('otomotif')" class="cat-card cursor-pointer group text-center" data-cat="otomotif">
+                <div class="bg-white p-4 md:p-6 rounded-3xl shadow-sm border-2 border-slate-100 group-hover:border-orange-400 transition-all">
+                    <img src="https://cdn-icons-png.flaticon.com/512/744/744465.png" class="w-8 md:w-12 mx-auto mb-2">
+                    <p class="text-[9px] md:text-xs font-bold uppercase text-slate-600">Otomotif</p>
+                </div>
+            </div>
+            <div onclick="filterProduct('lifestyle')" class="cat-card cursor-pointer group text-center" data-cat="lifestyle">
+                <div class="bg-white p-4 md:p-6 rounded-3xl shadow-sm border-2 border-slate-100 group-hover:border-orange-400 transition-all">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2893/2893504.png" class="w-8 md:w-12 mx-auto mb-2">
+                    <p class="text-[9px] md:text-xs font-bold uppercase text-slate-600">Gaya hidup</p>
+                </div>
+            </div>
+            <div onclick="filterProduct('rumah')" class="cat-card cursor-pointer group text-center" data-cat="rumah">
+                <div class="bg-white p-4 md:p-6 rounded-3xl shadow-sm border-2 border-slate-100 group-hover:border-orange-400 transition-all">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2667/2667231.png" class="w-8 md:w-12 mx-auto mb-2">
+                    <p class="text-[9px] md:text-xs font-bold uppercase text-slate-600">peralatan rumah</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="main-container mb-12">
+        <div class="bg-white rounded-[2rem] shadow-xl overflow-hidden border-2 border-red-500">
+            <div class="bg-gradient-to-r from-red-600 to-orange-500 p-5 flex justify-between items-center text-white">
+                <div class="flex items-center gap-4">
+                    <h2 class="text-xl md:text-3xl font-black italic animate-pulse-fast tracking-tighter">⚡ FLASH SALE</h2>
+                    <div class="flex gap-2 text-red-600 font-bold text-sm md:text-lg">
+                        <span id="hours" class="bg-white px-2 py-1 rounded-xl min-w-[35px] text-center">00</span>
+                        <span class="text-white">:</span>
+                        <span id="minutes" class="bg-white px-2 py-1 rounded-xl min-w-[35px] text-center">00</span>
+                        <span class="text-white">:</span>
+                        <span id="seconds" class="bg-white px-2 py-1 rounded-xl min-w-[35px] text-center">00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 grid grid-cols-2 md:grid-cols-6 gap-6" id="flashSaleContainer"></div>
+        </div>
+    </section>
+
+    <section class="main-container mb-24">
+        <div class="flex justify-between items-end mb-8 border-b-2 border-slate-100 pb-4">
+            <div>
+                <h2 class="text-2xl md:text-3xl font-black text-slate-800 uppercase tracking-tight" id="categoryTitle">Produk Pilihan</h2>
+                <p class="text-xs text-slate-400 font-medium mt-1">Menampilkan produk kualitas premium</p>
+            </div>
+            <span class="bg-slate-100 text-slate-500 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest">Real-time DB</span>
+        </div>
+        
+        <div id="productContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">
+            <div class="skeleton h-72 rounded-3xl w-full"></div>
+            <div class="skeleton h-72 rounded-3xl w-full"></div>
+            <div class="skeleton h-72 rounded-3xl w-full"></div>
+            <div class="skeleton h-72 rounded-3xl w-full"></div>
+            <div class="skeleton h-72 rounded-3xl w-full"></div>
+        </div>
+    </section>
+
+    <section class="main-container mb-20">
+        <div class="bg-slate-900 rounded-[2.5rem] p-8 md:p-12 text-white overflow-hidden relative">
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center gap-3">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="w-8 h-8">
+                        <h2 class="text-xl md:text-2xl font-black uppercase tracking-tight">Instagram Lookbook</h2>
+                    </div>
+                    <a href="https://instagram.com/iqlstore" target="_blank" class="bg-white/10 px-6 py-2 rounded-full text-xs font-bold backdrop-blur-md hover:bg-white/20 transition">@iqlstore</a>
+                </div>
+                <div id="instagramFeed" class="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4"></div>
+            </div>
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-orange-500 rounded-full blur-[100px] opacity-20"></div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t-8 border-slate-50 pt-20 pb-12 w-full mt-auto">
+        <div class="main-container grid grid-cols-1 md:grid-cols-3 gap-16">
+            <div>
+                <div class="text-4xl font-black mb-6"><span class="text-orange-500">IQL</span>STORE</div>
+                <p class="text-slate-500 text-sm leading-relaxed mb-8">Pelopor marketplace premium dengan kurasi produk terbaik. Belanja aman, cepat, dan bergaransi resmi hanya dalam satu genggaman.</p>
+                <div class="flex gap-5">
+                    <a href="https://instagram.com/iqlstore" target="_blank" class="hover:scale-110 transition">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" width="32">
+                    </a>
+                    <a href="https://tiktok.com/@iqlstore" target="_blank" class="hover:scale-110 transition">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3116/3116491.png" width="32">
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-bold mb-8 text-slate-800 text-lg border-l-4 border-orange-500 pl-4 uppercase tracking-widest">Layanan Pelanggan</h4>
+                <ul class="text-slate-500 text-sm space-y-5">
+                    <li onclick="window.open('https://wa.me/6283870088809')" class="hover:text-orange-500 cursor-pointer flex items-center gap-3 font-medium">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Bantuan Chat 24/7
+                    </li>
+                    <li onclick="window.open('https://www.google.com/search?q=lacak+resi')" class="hover:text-orange-500 cursor-pointer flex items-center gap-3 font-medium">
+                        📦 Lacak Pengiriman
+                    </li>
+                    <li class="hover:text-orange-500 cursor-pointer flex items-center gap-3 font-medium">
+                        🔄 Garansi Pengembalian
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold mb-8 text-slate-800 text-lg border-l-4 border-orange-500 pl-4 uppercase tracking-widest">Metode Bayar</h4>
+                <div class="grid grid-cols-3 gap-6 opacity-70">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" class="h-6 object-contain grayscale hover:grayscale-0 transition cursor-help" title="BCA">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg" class="h-6 object-contain grayscale hover:grayscale-0 transition cursor-help" title="Mandiri">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/BRI_2020.svg" class="h-6 object-contain grayscale hover:grayscale-0 transition cursor-help" title="BRI">
+                </div>
+            </div>
+        </div>
+        <div class="mt-20 pt-10 border-t text-center text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em]">
+            © 2026 IQL STORE INDONESIA • PREMIUM QUALITY MARKETPLACE
+        </div>
+    </footer>
+
+</div> 
+
+<div id="cartDrawer" class="fixed inset-y-0 right-0 w-full md:w-[450px] bg-white shadow-[-20px_0_60px_-15px_rgba(0,0,0,0.1)] z-[60] transform translate-x-full transition-transform duration-500 p-8 flex flex-col">
+    <div class="flex justify-between items-center mb-10">
+        <div>
+            <h2 class="text-3xl font-black italic tracking-tighter">KERANJANG</h2>
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Item yang Anda pilih</p>
+        </div>
+        <button onclick="toggleCart()" class="text-4xl text-slate-300 hover:text-red-500 transition">×</button>
+    </div>
+    <div id="cartItems" class="flex-1 overflow-y-auto space-y-6 pr-2"></div>
+    <div class="border-t-2 border-slate-50 pt-8 mt-6">
+        <div class="flex justify-between items-end mb-8">
+            <span class="font-bold text-slate-400 uppercase text-xs tracking-widest">Estimasi Total</span>
+            <span id="cartTotal" class="text-3xl font-black text-slate-900">Rp 0</span>
+        </div>
+        <button onclick="checkoutWA()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-5 rounded-[1.5rem] shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-3">
+            <span>KONFIRMASI VIA WHATSAPP</span>
+            <span class="text-xl">➔</span>
+        </button>
+    </div>
+</div>
+<div id="cartOverlay" class="fixed inset-0 bg-slate-900/60 z-[55] hidden backdrop-blur-md" onclick="toggleCart()"></div>
+
+<button id="backToTop" class="fixed bottom-24 right-8 bg-white text-slate-900 p-4 rounded-2xl shadow-2xl opacity-0 invisible transition-all duration-300 z-50 hover:bg-orange-500 hover:text-white border border-slate-100">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7" />
+    </svg>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+// CONFIG
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSI3wivl4JYwWKFdJE4AI6wgzzFQ-FvupdHaTxUuV2Rw1Kpmtg7DMDFiqpbj5sDXmzuUmxQk9iomvlp/pub?gid=0&single=true&output=csv'; 
+
+let products = [];
+let cart = JSON.parse(localStorage.getItem('IQL_CART')) || [];
+let currentCategory = 'all';
+let searchTimeout;
+
+// 1. DATA FETCHING & SYNC
+async function fetchProductsFromSheets() {
+    try {
+        const response = await fetch(SHEET_CSV_URL);
+        const csvData = await response.text();
+        const rows = csvData.split('\n').filter(row => row.trim() !== "").slice(1); 
+
+        products = rows.map(row => {
+            const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            if (cols.length < 3) return null;
+            const clean = (str) => str ? str.replace(/^["']|["']$/g, '').trim() : "";
+
+            const rawPrice = clean(cols[3]);
+            const cleanPrice = parseInt(rawPrice.replace(/\./g, '').replace(/[^0-9]/g, '')) || 0;
+            let imgUrl = clean(cols[4]);
+            if (!imgUrl || imgUrl === "" || imgUrl.length < 10) imgUrl = "https://via.placeholder.com/400x400?text=IQL+STORE+PRODUCT";
+
+            return {
+                id: clean(cols[0]), 
+                category: clean(cols[1]).toLowerCase() || 'umum', // Sinkronisasi otomatis ke lowercase
+                name: clean(cols[2]),
+                price: cleanPrice,
+                img: imgUrl,
+                flash: clean(cols[5]).toUpperCase() === 'TRUE',
+                shopee: clean(cols[6]) || "#",
+                description: cols[7] ? clean(cols[7]) : "Produk premium berkualitas tinggi dari koleksi IQL Store."
+            };
+        }).filter(p => p !== null && p.name !== "");
+
+        renderProducts();
+        renderInstagramFeed();
+    } catch (error) {
+        console.error("Database Connection Error:", error);
+    }
+}
+
+// 2. RENDERING SYSTEM
+function renderProducts(data = products) {
+    const container = document.getElementById('productContainer');
+    const flashContainer = document.getElementById('flashSaleContainer');
+    if(!container) return;
+    
+    container.innerHTML = "";
+    if(flashContainer) flashContainer.innerHTML = "";
+
+    data.forEach(p => {
+        const cardHtml = `
+            <div class="product-card overflow-hidden p-3 cursor-pointer relative group" onclick="showPopup('${p.id}')">
+                ${p.flash ? '<span class="absolute top-4 left-4 bg-red-600 text-white text-[8px] font-black px-2.5 py-1.5 rounded-lg z-10 animate-pulse-fast">⚡ HOT DEAL</span>' : ''}
+                <div class="overflow-hidden rounded-2xl mb-4 bg-slate-50">
+                    <img src="${p.img}" 
+                         onerror="this.src='https://via.placeholder.com/400x400?text=IQL+Product'"
+                         class="w-full h-40 md:h-56 object-cover transition-transform duration-1000 group-hover:scale-110" loading="lazy">
+                </div>
+                <div class="px-1 flex flex-col flex-1">
+                    <h4 class="text-[11px] md:text-sm font-bold line-clamp-2 h-10 mb-2 text-slate-800 leading-tight">${p.name}</h4>
+                    <div class="star-rating text-[9px] mb-3 flex items-center gap-1">
+                        ★★★★★ <span class="text-slate-400 font-bold ml-1">5.0</span>
+                    </div>
+                    <div class="mt-auto">
+                        <p class="text-[10px] text-slate-300 line-through">Rp ${(p.price * 1.3).toLocaleString('id-ID')}</p>
+                        <p class="font-black text-slate-900 text-sm md:text-lg">Rp ${p.price.toLocaleString('id-ID')}</p>
+                    </div>
+                </div>
+            </div>`;
+        
+        if(p.flash && flashContainer && currentCategory === 'all') flashContainer.innerHTML += cardHtml;
+        container.innerHTML += cardHtml;
+    });
+    updateCartUI();
+}
+
+// 3. FILTER & INTEGRATION
+function filterProduct(cat) {
+    const title = document.getElementById('categoryTitle');
+    const cards = document.querySelectorAll('.cat-card');
+    
+    // Update UI Active State
+    cards.forEach(card => {
+        if(card.getAttribute('data-cat') === cat) card.classList.add('cat-active');
+        else card.classList.remove('cat-active');
+    });
+
+    currentCategory = cat;
+    const categoryNames = {
+        'all': 'Produk Pilihan',
+        'gadget': 'Gadget & Tech',
+        'fashion': 'Fashion Trends',
+        'kecantikan': 'Beauty & Care',
+        'bayi': 'Baby & Kids',
+        'olahraga': 'Sport & Hobby',
+        'otomotif': 'Automotive',
+        'lifestyle': 'Lifestyle',
+        'rumah': 'Home & Living'
+    };
+
+    title.innerText = categoryNames[cat] || "Koleksi " + cat;
+    
+    const filtered = cat === 'all' ? products : products.filter(p => p.category === cat);
+    renderProducts(filtered);
+    
+    window.scrollTo({ top: title.offsetTop - 150, behavior: 'smooth' });
+}
+
+// 4. SEARCH SYSTEM
+function handleSearch(e) {
+    clearTimeout(searchTimeout);
+    const query = e.target.value.toLowerCase();
+    const suggestionsBox = document.getElementById('searchSuggestions');
+    
+    if (query.length < 1) {
+        suggestionsBox.style.display = 'none';
+        renderProducts(products);
+        return;
+    }
+
+    searchTimeout = setTimeout(() => {
+        const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+        
+        if (filtered.length > 0) {
+            suggestionsBox.innerHTML = filtered.slice(0, 6).map(p => `
+                <div class="suggestion-item p-4 border-b border-slate-50 flex items-center gap-4 transition" onclick="selectSuggestion('${p.id}')">
+                    <img src="${p.img}" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+                    <div>
+                        <p class="text-sm font-bold text-slate-800 line-clamp-1">${p.name}</p>
+                        <p class="text-[10px] text-orange-500 font-black">Rp ${p.price.toLocaleString('id-ID')}</p>
+                    </div>
+                </div>`).join('');
+            suggestionsBox.style.display = 'block';
+        } else {
+            suggestionsBox.innerHTML = `<div class="p-8 text-center text-slate-400 font-bold text-sm">Produk tidak ditemukan...</div>`;
+            suggestionsBox.style.display = 'block';
+        }
+        renderProducts(filtered);
+    }, 400);
+}
+
+function selectSuggestion(id) {
+    const p = products.find(x => x.id === id);
+    if(p) {
+        document.getElementById('searchInput').value = p.name;
+        document.getElementById('searchSuggestions').style.display = 'none';
+        showPopup(id);
+    }
+}
+
+// 5. POPUP SYSTEM
+function showPopup(id) {
+    const p = products.find(x => x.id === id);
+    if(!p) return;
+
+    Swal.fire({
+        html: `
+            <div class="text-left font-sans">
+                <div class="relative mb-6 overflow-hidden rounded-[2rem] shadow-xl group">
+                    <img src="${p.img}" class="w-full h-64 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <button onclick="shareProduct('${p.name}')" class="absolute top-4 right-4 bg-white/90 p-3 rounded-2xl shadow-xl hover:bg-white transition">📤</button>
+                </div>
+                <div class="px-2">
+                    <h3 class="text-xl font-black text-slate-900 mb-2 leading-tight">${p.name}</h3>
+                    <div class="flex items-center gap-2 mb-6">
+                        <span class="bg-orange-100 text-orange-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">${p.category}</span>
+                        <span class="text-slate-300">•</span>
+                        <span class="text-xs text-slate-400 font-bold">Terjual 1rb+</span>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-5 rounded-3xl border border-slate-100 mb-8">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Informasi Produk</p>
+                        <p class="text-slate-600 text-sm leading-relaxed">${p.description}</p>
+                    </div>
+
+                    <div class="flex items-end justify-between mb-8 px-2">
+                        <div>
+                            <p class="text-xs text-slate-300 line-through">Rp ${(p.price * 1.3).toLocaleString('id-ID')}</p>
+                            <p class="text-3xl font-black text-slate-900">Rp ${p.price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] font-black text-green-500 bg-green-50 px-3 py-1 rounded-lg">READY STOCK</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-5 gap-3">
+                        <button onclick="addToCart('${p.id}'); Swal.close()" class="col-span-3 bg-slate-900 text-white p-5 rounded-[1.5rem] font-black text-xs hover:bg-black transition-all active:scale-95 shadow-xl">TAMBAH KERANJANG</button>
+                        <a href="${p.shopee}" target="_blank" class="col-span-2 bg-orange-500 text-white p-5 rounded-[1.5rem] font-black text-xs hover:bg-orange-600 transition-all flex items-center justify-center shadow-xl">SHOPEE</a>
+                    </div>
+                </div>
+            </div>`,
+        showConfirmButton: false, 
+        showCloseButton: true, 
+        customClass: { popup: 'rounded-[3rem] p-4' }
+    });
+}
+
+// 6. CART LOGIC
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 2500,
+    background: '#0f172a',
+    color: '#fff'
+});
+
+function addToCart(id) {
+    const p = products.find(i => i.id === id);
+    if(!p) return;
+    const exists = cart.find(i => i.id === id);
+    if (exists) exists.qty++; else cart.push({ ...p, qty: 1 });
+    saveCart();
+    Toast.fire({ icon: 'success', title: 'Dimasukkan ke keranjang' });
+    updateCartUI();
+}
+
+function updateCartUI() {
+    const list = document.getElementById('cartItems');
+    const totalLabel = document.getElementById('cartTotal');
+    const countLabel = document.getElementById('cartCount');
+    if(!list) return;
+
+    let total = 0, count = 0;
+    list.innerHTML = "";
+    
+    if(cart.length === 0) {
+        list.innerHTML = `
+            <div class="text-center py-20">
+                <div class="text-6xl mb-4 opacity-20">🛒</div>
+                <p class="font-black text-slate-300 uppercase tracking-widest text-xs">Belum ada barang</p>
+            </div>`;
+    }
+    
+    cart.forEach((item, index) => {
+        total += item.price * item.qty;
+        count += item.qty;
+        list.innerHTML += `
+            <div class="flex items-center gap-5 bg-slate-50 p-4 rounded-3xl border border-slate-100 group">
+                <img src="${item.img}" class="w-20 h-20 object-cover rounded-2xl shadow-md group-hover:scale-105 transition">
+                <div class="flex-1">
+                    <p class="font-extrabold text-sm text-slate-800 line-clamp-1 mb-1">${item.name}</p>
+                    <p class="text-orange-600 font-black text-sm mb-3">Rp ${item.price.toLocaleString('id-ID')}</p>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center bg-white rounded-xl border border-slate-200 p-1">
+                            <button onclick="changeQty(${index}, -1)" class="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-black">-</button>
+                            <span class="w-8 text-center text-xs font-black">${item.qty}</span>
+                            <button onclick="changeQty(${index}, 1)" class="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-black">+</button>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-slate-300 hover:text-red-500 transition">🗑️</button>
+                    </div>
+                </div>
+            </div>`;
+    });
+
+    countLabel.innerText = count;
+    totalLabel.innerText = "Rp " + total.toLocaleString('id-ID');
+}
+
+function changeQty(index, delta) {
+    cart[index].qty += delta;
+    if(cart[index].qty < 1) cart.splice(index, 1);
+    saveCart();
+    updateCartUI();
+}
+
+function removeFromCart(i) { 
+    cart.splice(i, 1); 
+    saveCart(); 
+    updateCartUI(); 
+}
+
+function saveCart() { 
+    localStorage.setItem('IQL_CART', JSON.stringify(cart)); 
+}
+
+function toggleCart() { 
+    document.getElementById('cartDrawer').classList.toggle('translate-x-full'); 
+    document.getElementById('cartOverlay').classList.toggle('hidden'); 
+}
+
+function checkoutWA() {
+    if (cart.length === 0) return Swal.fire('Oops!', 'Pilih produk dulu ya.', 'info');
+    let msg = "🚀 *ORDER BARU - IQL STORE*\n\n";
+    cart.forEach(i => msg += `• ${i.name} [${i.qty}x]\n`);
+    msg += `\n💰 *TOTAL TAGIHAN: ${document.getElementById('cartTotal').innerText}*\n\n_Mohon instruksi selanjutnya untuk pengiriman._`;
+    window.open(`https://wa.me/6283870088809?text=${encodeURIComponent(msg)}`);
+}
+
+// 7. UTILS & INIT
+function startCountdown() {
+    const end = new Date(); end.setHours(24, 0, 0, 0);
+    setInterval(() => {
+        const diff = end - new Date();
+        if (diff > 0) {
+            document.getElementById('hours').innerText = String(Math.floor(diff/3600000)).padStart(2,'0');
+            document.getElementById('minutes').innerText = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+            document.getElementById('seconds').innerText = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+        }
+    }, 1000);
+}
+
+function renderInstagramFeed() {
+    const feed = document.getElementById('instagramFeed');
+    if (!feed) return;
+    feed.innerHTML = products.slice(0, 6).map(p => `
+        <div class="ig-item aspect-square shadow-2xl" onclick="showPopup('${p.id}')">
+            <img src="${p.img}" class="w-full h-full object-cover">
+            <div class="ig-overlay">
+                <p class="text-[10px] font-black uppercase tracking-widest mb-1">View Detail</p>
+                <span class="text-xl">🛍️</span>
+            </div>
+        </div>`).join('');
+}
+
+function clearSearchField() {
+    document.getElementById('searchInput').value = "";
+    document.getElementById('clearSearch').style.display = 'none';
+    document.getElementById('searchSuggestions').style.display = 'none';
+    renderProducts(products);
+}
+
+function toggleClearBtn() {
+    const input = document.getElementById('searchInput');
+    document.getElementById('clearSearch').style.display = input.value.length > 0 ? 'block' : 'none';
+}
+
+function shareProduct(name) {
+    const text = `Produk rekomendasi di IQL Store: ${name} 🔥`;
+    if (navigator.share) navigator.share({ title: 'IQL Store', text: text, url: window.location.href });
+    else window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + window.location.href)}`);
+}
+
+window.onload = () => {
+    fetchProductsFromSheets();
+    startCountdown();
+    new Swiper(".heroSwiper", { 
+        effect: "fade", 
+        autoplay: { delay: 5000 }, 
+        pagination: { el: ".swiper-pagination", clickable: true }, 
+        loop: true 
+    });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) { btt.classList.replace('opacity-0', 'opacity-100'); btt.classList.replace('invisible', 'visible'); }
+        else { btt.classList.replace('opacity-100', 'opacity-0'); btt.classList.replace('visible', 'invisible'); }
+    });
+    btt.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+</body>
+</html>
