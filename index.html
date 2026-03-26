@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQL | Aesthetic Archive</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #536647; /* Sage Green */
+            --accent: #c7a97b;  /* Earthy Tan */
+            --bg: #fdfbf7;      /* Warm White/Paper */
+            --white: #ffffff;
+            --text: #2f3542;
+            --muted: #747d8c;
+            --shadow: 0 10px 30px rgba(83, 102, 71, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Navigasi */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 6%; background: var(--white);
+            box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem;
+            font-weight: 700; text-decoration: none; color: var(--primary);
+        }
+
+        .nav-links a {
+            text-decoration: none; color: var(--text); font-size: 0.75rem;
+            font-weight: 600; text-transform: uppercase; margin-left: 20px;
+            letter-spacing: 1px;
+        }
+
+        /* Hero Section - Sage Gradient */
+        header {
+            padding: 60px 6% 90px;
+            background: linear-gradient(135deg, #536647 0%, #6b825d 100%);
+            color: white; text-align: center;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif; font-size: clamp(2.3rem, 8vw, 4.2rem);
+            margin-bottom: 15px; line-height: 1.1; font-weight: 700;
+        }
+
+        .sub-header { font-size: 1rem; opacity: 0.9; max-width: 550px; margin: 0 auto; font-weight: 300; }
+
+        /* Main Content */
+        .container { max-width: 1100px; margin: -50px auto 0; padding: 0 6%; }
+        
+        .section-label {
+            font-family: 'Playfair Display', serif; font-size: 1.3rem;
+            margin: 40px 0 20px; color: var(--primary); font-style: italic;
+        }
+
+        /* Card Styling */
+        .card {
+            background: var(--white); border-radius: 12px; overflow: hidden;
+            box-shadow: var(--shadow); text-decoration: none; color: inherit;
+            display: flex; flex-direction: column; transition: all 0.3s ease;
+            border: 1px solid rgba(83, 102, 71, 0.05);
+        }
+
+        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(83, 102, 71, 0.12); }
+
+        .img-wrapper { width: 100%; height: 220px; overflow: hidden; position: relative; }
+        .img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .card:hover .img-wrapper img { transform: scale(1.05); }
+        
+        .tag {
+            position: absolute; top: 15px; left: 15px; background: var(--accent);
+            color: white; padding: 5px 12px; font-size: 0.65rem;
+            font-weight: 700; border-radius: 4px; text-transform: uppercase;
+        }
+
+        .card-info { padding: 25px; }
+        .card-info h3 { font-family: 'Playfair Display', serif; margin-bottom: 10px; font-size: 1.4rem; color: var(--primary); }
+        .card-info p { font-size: 0.9rem; color: var(--muted); margin-bottom: 20px; }
+        .btn-text { font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Grid Logic */
+        .featured-row { margin-bottom: 30px; }
+        .secondary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+
+        /* Footer */
+        footer {
+            margin-top: 80px; padding: 60px 6%; background: #3e4a36;
+            color: #fdfbf7; text-align: center;
+        }
+
+        /* MOBILE OPTIMIZATION */
+        @media (max-width: 768px) {
+            header { padding-bottom: 110px; }
+            .container { margin-top: -70px; }
+            h1 { font-size: 2.8rem; }
+            
+            /* Horizontal Swipe for Equipment & Products on Mobile */
+            .secondary-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                margin: 0 -6%; /* Full bleed effect */
+                padding: 0 6% 20px;
+                gap: 15px;
+                scrollbar-width: none; 
+            }
+            .secondary-grid::-webkit-scrollbar { display: none; }
+
+            .secondary-grid .card {
+                flex: 0 0 85%;
+                scroll-snap-align: center;
+            }
+            
+            .nav-links { display: none; } /* Clean look for mobile */
+            .img-wrapper { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">IQL.</a>
+        <div class="nav-links">
+            <a href="artikel.html">Articles</a>
+            <a href="peralatan.html">Peralatan</a>
+            <a href="produk.html">Produk</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Modern <br><i>Aesthetic.</i></h1>
+        <p class="sub-header">Kurasi digital untuk produktivitas dan gaya hidup minimalis dengan sentuhan alam.</p>
+    </header>
+
+    <div class="container">
+        <div class="featured-row">
+            <a href="artikel.html" class="card">
+                <div class="img-wrapper">
+                    <span class="tag">Featured Article</span>
+                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1000" alt="Article">
+                </div>
+                <div class="card-info">
+                    <h3>Seni Menghilang di Era Digital</h3>
+                    <p>Menemukan ruang fokus di tengah banjir notifikasi hari ini. Bagaimana cara tetap waras di dunia yang serba cepat.</p>
+                    <span class="btn-text">Baca Esai &rarr;</span>
+                </div>
+            </a>
+        </div>
+
+        <h2 class="section-label">Selected Collections</h2>
+
+        <div class="secondary-grid">
+            <a href="peralatan.html" class="card">
+                <div class="img-wrapper">
+                    <span class="tag">Workspace</span>
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600" alt="Tools">
+                </div>
+                <div class="card-info">
+                    <h3>Peralatan</h3>
+                    <p>Hardware pilihan untuk menunjang kreativitas.</p>
+                    <span class="btn-text">Eksplorasi &rarr;</span>
+                </div>
+            </a>
+
+            <a href="produk.html" class="card">
+                <div class="img-wrapper">
+                    <span class="tag">Digital & Goods</span>
+                    <img src="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=600" alt="Store">
+                </div>
+                <div class="card-info">
+                    <h3>Produk IQL</h3>
+                    <p>Koleksi digital dan fisik kurasi terbaik.</p>
+                    <span class="btn-text">Buka Toko &rarr;</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 10px;">IQL.</p>
+        <p style="font-size: 0.7rem; opacity: 0.6; letter-spacing: 2px; text-transform: uppercase;">&copy; 2026 Bandung, Indonesia</p>
+    </footer>
+
+</body>
+</html>
