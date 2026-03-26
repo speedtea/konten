@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQL Premium | Digital Archive & Curator</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #1abc9c;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+            --text: #34495e;
+            --muted: #95a5a6;
+            --border: #dcdde1;
+            --shadow: 0 10px 30px rgba(44, 62, 80, 0.08);
+            --neon: #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 6%; background: var(--white);
+            box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.7rem;
+            font-weight: 700; text-decoration: none; color: var(--primary);
+        }
+
+        .nav-links a {
+            text-decoration: none; color: var(--text); font-size: 0.75rem;
+            font-weight: 600; text-transform: uppercase; margin-left: 20px;
+            letter-spacing: 1.5px;
+        }
+
+        /* Hero Section Perbaikan */
+        header {
+            height: 85vh;
+            min-height: 500px;
+            padding: 0 6% 80px;
+            background-color: #000; /* Warna dasar hitam jika gambar gagal */
+            background-size: cover;
+            background-position: center 20%;
+            background-repeat: no-repeat;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            transition: background 0.8s ease-in-out;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%);
+            z-index: 1;
+        }
+
+        header h1, header p { position: relative; z-index: 2; }
+
+        header h1 {
+            font-family: 'Playfair Display', serif; 
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            margin-bottom: 10px; 
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 15px var(--neon);
+        }
+
+        .sub-header { 
+            font-size: 1.1rem; 
+            border-left: 3px solid var(--accent); 
+            padding-left: 20px;
+        }
+
+        .container { max-width: 1100px; margin: -40px auto 0; padding: 0 6%; position: relative; z-index: 10; }
+
+        .humor-box {
+            background: #fffbe6; border: 2px dashed #f1c40f;
+            padding: 25px; border-radius: 12px; margin-bottom: 40px;
+            text-align: center; box-shadow: var(--shadow);
+        }
+
+        .section-label {
+            font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--primary); display: block; margin: 40px 0 20px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+
+        .card {
+            background: var(--white); border-radius: 8px; overflow: hidden;
+            box-shadow: var(--shadow); text-decoration: none; color: inherit;
+            display: flex; flex-direction: column; transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-10px); }
+
+        .img-wrapper { width: 100%; height: 250px; overflow: hidden; position: relative; }
+        .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+        footer { margin-top: 80px; padding: 60px 6%; background: var(--primary); color: white; text-align: center; }
+
+        @media (max-width: 768px) {
+            header { height: 65vh; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">IQL.</a>
+        <div class="nav-links">
+            <a href="artikel.html">Articles</a>
+            <a href="peralatan.html">Peralatan</a>
+            <a href="produk.html">Produk</a>
+        </div>
+    </nav>
+
+    <header id="main-header">
+        <h1 id="header-title">IQL ARCHIVE</h1>
+        <p class="sub-header" id="header-sub">Memuat konten...</p>
+    </header>
+
+    <div class="container">
+        <div class="humor-box">
+            <p>"Cita-cita sukses, tapi hobi tidur. Mungkin suksesnya lewat mimpi." 😴</p>
+        </div>
+
+        <span class="section-label">Eksplorasi</span>
+        <div class="grid-2">
+            <a href="peralatan.html" class="card">
+                <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600" alt="Tools"></div>
+                <div class="card-info"><h3>Peralatan</h3><p>Alat produktivitas.</p></div>
+            </a>
+            <a href="produk.html" class="card">
+                <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=600" alt="Store"></div>
+                <div class="card-info"><h3>Produk</h3><p>Koleksi belanja.</p></div>
+            </a>
+        </div>
+    </div>
+
+    <footer><p>&copy; 2026 Bandung, Indonesia</p></footer>
+
+    <script>
+        // Link CSV Sheets yang kamu berikan
+        const csvConfigURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSeFiyvLe4gGbYUZnNbZ6DmNFjhNTxIGD6jaqub--cEvWg_VcsETVfzR6x3kKRbgHsflleHyW7Y0-0W/pub?gid=1039655153&single=true&output=csv";
+
+        async function initHeader() {
+            try {
+                const response = await fetch(csvConfigURL);
+                const data = await response.text();
+                const rows = data.split('\n');
+                
+                // Ambil baris ke-2
+                const config = rows[1].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                
+                const status = config[0].trim();
+                const fotoNamaFile = config[1].replace(/"/g, '').trim();
+                const judul = config[2].replace(/"/g, '').trim();
+                const subjudul = config[3].replace(/"/g, '').trim();
+
+                if (status === "Active") {
+                    document.getElementById('header-title').innerText = judul;
+                    document.getElementById('header-sub').innerText = subjudul;
+                    
+                    if(fotoNamaFile) {
+                        // Perbaikan: Memastikan background diterapkan dengan benar
+                        const headerEl = document.getElementById('main-header');
+                        headerEl.style.backgroundImage = `linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%), url('${fotoNamaFile}')`;
+                    }
+                }
+            } catch (err) {
+                console.error("Gagal:", err);
+            }
+        }
+        initHeader();
+    </script>
+</body>
+</html>
