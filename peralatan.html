@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peralatan | Iqbal's Gear Setup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --secondary: #777;
+            --accent: #000;
+            --border: #eeeeee;
+        }
+
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 5%; }
+        
+        .back-nav { margin-bottom: 50px; }
+        .back-nav a { text-decoration: none; color: var(--secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        header { margin-bottom: 60px; border-bottom: 1px solid var(--border); padding-bottom: 30px; }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 10px; }
+        header p { color: var(--secondary); max-width: 500px; }
+
+        /* Grid Sistem 8 Produk (4 per baris di desktop) */
+        .gear-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 kolom = 2 baris jika ada 8 produk */
+            gap: 40px 25px;
+        }
+
+        .gear-card { text-decoration: none; color: inherit; transition: 0.3s; position: relative; }
+        
+        .img-box { 
+            width: 100%; 
+            aspect-ratio: 1/1; 
+            background: #f9f9f9; 
+            overflow: hidden; 
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+        }
+        
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gear-card:hover img { transform: scale(1.05); }
+
+        .category { font-size: 0.65rem; text-transform: uppercase; color: var(--secondary); letter-spacing: 1px; }
+        .item-name { display: block; font-weight: 600; margin: 5px 0; font-size: 1rem; }
+        .price { font-size: 0.9rem; color: var(--secondary); margin-bottom: 15px; display: block; }
+
+        /* Tombol Affiliate */
+        .btn-affiliate {
+            display: inline-block;
+            width: 100%;
+            padding: 10px 0;
+            background: var(--accent);
+            color: #fff;
+            text-align: center;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        
+        .btn-affiliate:hover { background: #333; }
+
+        /* Responsif Mobile */
+        @media (max-width: 900px) {
+            .gear-grid { grid-template-columns: repeat(2, 1fr); } /* 2 kolom di tablet */
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 2.2rem; }
+            .gear-grid { 
+                display: flex; 
+                overflow-x: auto; 
+                scroll-snap-type: x mandatory;
+                padding-bottom: 20px;
+                gap: 15px;
+            }
+            .gear-card { flex: 0 0 75%; scroll-snap-align: start; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="back-nav"><a href="index.html">← Kembali</a></nav>
+
+        <header>
+            <h1>Essential <i>Gear.</i></h1>
+            <p>Koleksi perangkat keras dan alat bantu yang saya rekomendasikan untuk menunjang alur kerja harian.</p>
+        </header>
+
+        <div class="gear-grid" id="gear-container">
+            <p>Memuat koleksi...</p>
+        </div>
+    </div>
+
+    <script>
+        // KONFIGURASI GOOGLE SHEETS
+        // 1. Buat Google Sheet dengan kolom: Kategori, Nama, Harga, Link, Foto
+        // 2. Publish to Web (File > Share > Publish to Web) sebagai CSV
+        const sheetURL = "GANTI_DENGAN_LINK_CSV_GOOGLE_SHEET_KAMU";
+
+        async function fetchGear() {
+            try {
+                const response = await fetch(sheetURL);
+                const data = await response.text();
+                const rows = data.split('\n').slice(1); // Lewati baris judul (header)
+                
+                const container = document.getElementById('gear-container');
+                container.innerHTML = ''; // Hapus pesan loading
+
+                rows.forEach(row => {
+                    const columns = row.split(','); // Asumsi pemisah koma
+                    if(columns.length < 4) return;
+
+                    const [kategori, nama, harga, link, foto] = columns;
+
+                    container.innerHTML += `
+                        <div class="gear-card">
+                            <div class="img-box">
+                                <img src="${foto || 'https://via.placeholder.com/400'}" alt="${nama}">
+                            </div>
+                            <span class="category">${kategori}</span>
+                            <span class="item-name">${nama}</span>
+                            <span class="price">${harga}</span>
+                            <a href="${link}" target="_blank" class="btn-affiliate">Cek di Marketplace</a>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Gagal memuat data:", error);
+                // Placeholder jika Google Sheet belum disetup
+                renderManual(); 
+            }
+        }
+
+        // Fungsi cadangan jika link Google Sheet belum ada
+        function renderManual() {
+            const container = document.getElementById('gear-container');
+            container.innerHTML = '';
+            for (let i = 1; i <= 8; i++) {
+                container.innerHTML += `
+                    <div class="gear-card">
+                        <div class="img-box"><img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=400&q=80"></div>
+                        <span class="category">Workspace</span>
+                        <span class="item-name">Mechanical Keyboard ${i}</span>
+                        <span class="price">Rp 1.200.000</span>
+                        <a href="#" class="btn-affiliate">Cek di Marketplace</a>
+                    </div>
+                `;
+            }
+        }
+
+        fetchGear();
+    </script>
+</body>
+</html>
