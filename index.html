@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQL Premium | Digital Archive & Curator</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2c3e50; /* Midnight Slate */
+            --accent: #1abc9c;  /* Turquoise */
+            --bg: #f4f7f6;      
+            --white: #ffffff;
+            --text: #34495e;
+            --muted: #95a5a6;
+            --border: #dcdde1;
+            --shadow: 0 10px 30px rgba(44, 62, 80, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigasi */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 6%; background: var(--white);
+            box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.7rem;
+            font-weight: 700; text-decoration: none; color: var(--primary);
+        }
+
+        .nav-links a {
+            text-decoration: none; color: var(--text); font-size: 0.75rem;
+            font-weight: 600; text-transform: uppercase; margin-left: 20px;
+            letter-spacing: 1.5px;
+        }
+
+        /* Hero Section Dinamis */
+        header {
+            padding: 120px 6% 160px;
+            background: linear-gradient(to right, rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.4)), url('banner2.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: left;
+            position: relative;
+            transition: background 0.5s ease;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 8vw, 4rem);
+            margin-bottom: 15px; line-height: 1.1; font-weight: 700;
+        }
+
+        .sub-header { 
+            font-size: 1.1rem; opacity: 0.9; max-width: 550px; 
+            border-left: 3px solid var(--accent); padding-left: 20px;
+        }
+
+        /* Container Utama */
+        .container { max-width: 1100px; margin: -60px auto 0; padding: 0 6%; }
+
+        /* Pojok Cengir (Saran Kata-kata Lucu) */
+        .humor-box {
+            background: #fffbe6; border: 2px dashed #f1c40f;
+            padding: 25px; border-radius: 12px; margin-bottom: 40px;
+            text-align: center; box-shadow: var(--shadow);
+        }
+        .humor-box p { font-style: italic; color: #7f8c8d; font-size: 0.95rem; }
+
+        /* Section Styling */
+        .section-label {
+            font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--primary); display: block; margin: 40px 0 20px;
+        }
+
+        /* Card Component */
+        .card {
+            background: var(--white); border-radius: 8px; overflow: hidden;
+            box-shadow: var(--shadow); text-decoration: none; color: inherit;
+            display: flex; flex-direction: column; transition: transform 0.3s ease;
+            margin-bottom: 30px;
+        }
+        .card:hover { transform: translateY(-10px); }
+
+        .img-wrapper { width: 100%; height: 250px; overflow: hidden; position: relative; }
+        .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .tag {
+            position: absolute; top: 15px; left: 15px; background: var(--primary);
+            color: var(--accent); padding: 4px 12px; font-size: 0.6rem; font-weight: 700;
+        }
+
+        .card-info { padding: 25px; }
+        .card-info h3 { font-family: 'Playfair Display', serif; margin-bottom: 10px; color: var(--primary); }
+        .card-info p { font-size: 0.85rem; color: var(--muted); }
+
+        /* Grid System */
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+
+        /* Footer */
+        footer {
+            margin-top: 80px; padding: 60px 6%; background: var(--primary);
+            color: var(--white); text-align: center;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            header { padding: 100px 6% 120px; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">IQL.</a>
+        <div class="nav-links">
+            <a href="artikel.html">Articles</a>
+            <a href="peralatan.html">Peralatan</a>
+            <a href="produk.html">Produk</a>
+        </div>
+    </nav>
+
+    <header id="main-header">
+        <h1 id="header-title">Loading...</h1>
+        <p class="sub-header" id="header-sub">Sedang memuat inspirasi...</p>
+    </header>
+
+    <div class="container">
+        <div class="humor-box">
+            <p>"Cita-cita pengen jadi orang sukses, tapi hobi tidur siang. Mungkin suksesnya lewat mimpi dulu." 😴✨</p>
+        </div>
+
+        <span class="section-label">Pilihan Editor</span>
+        <div class="featured-row">
+            <a href="artikel.html" class="card">
+                <div class="img-wrapper">
+                    <span class="tag">Highlight</span>
+                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200" alt="Article">
+                </div>
+                <div class="card-info">
+                    <h3>Filosofi Minimalis di Era Digital</h3>
+                    <p>Menemukan ketenangan di tengah bisingnya notifikasi smartphone.</p>
+                </div>
+            </a>
+        </div>
+
+        <span class="section-label">Eksplorasi Arsip</span>
+        <div class="grid-2">
+            <a href="peralatan.html" class="card">
+                <div class="img-wrapper">
+                    <span class="tag">Gear</span>
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600" alt="Tools">
+                </div>
+                <div class="card-info">
+                    <h3>Peralatan Kerja</h3>
+                    <p>Kurasi alat fisik untuk produktivitas maksimal.</p>
+                </div>
+            </a>
+
+            <a href="produk.html" class="card">
+                <div class="img-wrapper">
+                    <span class="tag">Shop</span>
+                    <img src="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=600" alt="Store">
+                </div>
+                <div class="card-info">
+                    <h3>Koleksi Produk</h3>
+                    <p>Akses ke produk pilihan dengan harga terbaik.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <span class="logo" style="color: var(--accent);">IQL.</span>
+        <p style="opacity: 0.6; font-size: 0.8rem; margin-top: 10px;">&copy; 2026 Bandung, Indonesia</p>
+    </footer>
+
+    <script>
+        // Link CSV Config Header yang kamu berikan
+        const csvConfigURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSeFiyvLe4gGbYUZnNbZ6DmNFjhNTxIGD6jaqub--cEvWg_VcsETVfzR6x3kKRbgHsflleHyW7Y0-0W/pub?gid=1039655153&single=true&output=csv";
+
+        async function initHeader() {
+            try {
+                const response = await fetch(csvConfigURL);
+                const data = await response.text();
+                const rows = data.split('\n');
+                
+                // Ambil data dari baris ke-2 (Index 1)
+                const config = rows[1].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                
+                const status = config[0].trim();
+                const fotoUrl = config[1].replace(/"/g, '').trim();
+                const judul = config[2].replace(/"/g, '').trim();
+                const subjudul = config[3].replace(/"/g, '').trim();
+
+                if (status === "Active") {
+                    document.getElementById('header-title').innerHTML = judul;
+                    document.getElementById('header-sub').innerText = subjudul;
+                    // Update background jika fotoUrl tidak kosong
+                    if(fotoUrl) {
+                        document.getElementById('main-header').style.backgroundImage = `linear-gradient(to right, rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.4)), url('${fotoUrl}')`;
+                    }
+                }
+            } catch (err) {
+                console.error("Gagal memuat konfigurasi header:", err);
+                document.getElementById('header-title').innerText = "IQL Archive";
+            }
+        }
+
+        initHeader();
+    </script>
+</body>
+</html>
